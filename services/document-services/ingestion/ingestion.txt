@@ -1,0 +1,95 @@
+from flask import Flask, jsonify, request
+import requests
+import magic
+import pika
+import logging
+
+
+# Define a mapping of document types to queue names
+DOCUMENT_TYPE_QUEUE_MAPPING = {
+    'application/pdf': 'pdf-processing',
+    'text/xml': 'xml-processing',
+    # Add more mappings as needed
+}
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# RabbitMQ connection parameters
+RABBITMQ_HOST = 'localhost'
+RABBITMQ_PORT = 5672
+RABBITMQ_QUEUE = 'document-processing'
+
+# Sphinx internal notes
+"""
+Insert your internal notes here as needed for Sphinx documentation.
+This could include details about service usage, configuration, etc.
+"""
+
+def fetch_document(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        return response.content
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching document from {url}: {str(e)}")
+        return None
+
+def determine_document_type(content):
+    try:
+        # Initialize magic instance
+        mime = magic.Magic(mime=True)
+        mime_type = mime.from_buffer(content)
+        return mime_type.decode('utf-8')
+    except Exception as e:
+        logger.error(f"Error determining document type: {str(e)}")
+        return 'unknown'
+
+def send_to_rabbitmq(message):
+    try:
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST, port=RABBITMQ_PORT))
+        channel = connection.channel()
+        channel.queue_declare(queue=RABBITMQ_QUEUE)
+        channel.basic_publish(exchange='', routing_key=RABBITMQ_QUEUE, body=message)
+        logger.info(f"Message sent to RabbitMQ queue '{RABBITMQ_QUEUE}': {message}")
+        connection.close()
+    except Exception as e:
+        logger.error(f"Error sending message to RabbitMQ: {str(e)}")
+
+@app.route('/process-document', methods=['POST'])
+def process_document():
+    try:
+        # Assume request body contains 'url' parameter
+        url = request.json['url']
+        logger.info(f"Received request to process document from URL: {url}")
+
+        # Fetch the document from the URL
+        document_content = fetch_document(url)
+        if not document_content:
+            return jsonify({"error": "Failed to fetch document"}), 500
+
+        # Determine document type
+        document_type = determine_document_type(document_content)
+        logger.info(f"Detected document type: {document_type}")
+
+        # Route document based on type (example logic)
+        if document_type == 'pdf':
+            # Send to PDF processing microservice
+            send_to_rabbitmq(f"Process PDF document: {url}")
+        elif document_type == 'xml':
+            # Send to XML processing microservice
+            send_to_rabbitmq(f"Process XML document: {url}")
+        else:
+            # Handle unknown document types
+            logger.warning("Unknown document type, skipping processing")
+
+        # Return success response
+        return jsonify({"message": "Document processing initiated", "document_type": document_type}), 200
+
+    except Exception as e:
+        logger.error(f"Error processing document: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)

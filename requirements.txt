@@ -1,0 +1,43 @@
+# This will be where all global requirements are kept
+# May need to breakup into multiple files if gets too long
+
+Package                       | Version   | Description                                                                                      | Dependencies
+------------------------------|-----------|--------------------------------------------------------------------------------------------------|------------------------------------------------
+aio-pika                      | 9.4.1     | Provides asynchronus support for messaging to RabbitMQ                                           | -   
+alabaster                     | 0.7.16    | Helper for generating Sphinx documentation themes                                                 | -
+Babel                         | 2.15.0    | Internationalization and localization library for Python applications                             | -
+blinker                       | 1.8.2     | Fast and simple object-to-object and broadcast signaling library                                 | -
+certifi                       | 2024.6.2  | Certificates for validating SSL connections                                                      | -
+charset-normalizer            | 3.3.2     | Unicode string normalization for HTTP and other internet protocols                               | -
+click                         | 8.1.7     | Command line interface creation kit for Python                                                    | -
+colorama                      | 0.4.6     | Cross-platform colored terminal text library                                                      | -
+docutils                      | 0.21.2    | Text processing system for processing plaintext documentation to useful formats like HTML, XML   | -
+Flask                         | 3.0.3     | Lightweight WSGI web application framework in Python                                              | Werkzeug
+idna                          | 3.7       | Internationalized Domain Names in Applications (IDNA) encoding and decoding library              | -
+imagesize                     | 1.4.1     | Library for getting image size of PNG, JPEG, etc. images                                          | -
+iniconfig                     | 2.0.0     | Simplified INI configuration handling for Python                                                  | -
+itsdangerous                  | 2.2.0     | Various helpers to pass trusted data to untrusted environments                                     | -
+Jinja2                        | 3.1.4     | Template engine for Python, used by Flask and others                                               | MarkupSafe
+loguru                        | 0.7.2     | Python logging library that provides a powerful and user-friendly API                              | -
+lxml                          | 5.2.2     | Library for processing XML and HTML in Python                                                      | -
+MarkupSafe                    | 2.1.5     | Implements a XML/HTML/XHTML Markup safe string for Python                                          | -
+packaging                     | 24.1      | Core utilities for Python packages                                                                | -
+pika                          | 1.3.2     | Advanced Messagin Queuing Protocol to interact with RabbitMQ                                                                | -  
+pip                           | 24.0      | Python package installer                                                                         | -
+pluggy                        | 1.5.0     | Plugin registration and hook management library for Python                                         | -
+Pygments                      | 2.18.0    | Syntax highlighting package written in Python                                                     | -
+pytest                        | 8.2.2     | Testing framework for Python                                                                      | pluggy, iniconfig, packaging
+python-consul                 | 1.1.0     | Python client for Consul, a service networking tool                                               | requests
+python-docx                   | 1.1.2     | Python library for creating and updating Microsoft Word (.docx) files                             | -
+python-magic                  | 0.4.27    | Python interface to the libmagic file type identification library                                 | -
+pyYAML                        | 0.4.27    | Data format used for defining configuration files                                 | - 
+rabbitmq-server               | 6.0.1     | Interface for RabbitMQ, a message broker                                                          | -
+requests                      | 2.32.3    | HTTP library for Python                                                                           | certifi, charset-normalizer, idna, urllib3
+six                           | 1.16.0    | Python 2 and 3 compatibility library                                                             | -
+snowballstemmer               | 2.2.0     | Stemming algorithms for natural languages                                                        | -
+Sphinx                        | 7.3.7     | Documentation generator for Python projects                                                       | Babel, docutils, Jinja2, Pygments, alabaster, snowballstemmer, packaging, sphinxcontrib-* modules
+sphinxcontrib-* modules       | Various   | Various extensions for Sphinx documentation generator                                             | Sphinx, docutils, Jinja2, Pygments, packaging, snowballstemmer, Babel, alabaster
+typing_extensions             | 4.12.2    | Backported and experimental type hints for Python 3.5+                                            | -
+urllib3                       | 2.2.2     | HTTP client for Python, providing safe connection pooling, thread safety, and file post support   | certifi, idna, six
+Werkzeug                      | 3.0.3     | Comprehensive WSGI web application library                                                       | -
+win32-setctime                | 1.1.0     | Windows-specific library to set file creation times                                               | -
